@@ -1,0 +1,37 @@
+$z-front: 10000;
+
+:host ::ng-deep .spinner {
+    $size: 200px;
+    $pos: calc(50% - $size / 2);
+    
+    position: absolute;
+    z-index: $z-front;
+
+    left: $pos;
+    top: $pos;
+
+    width: $size;
+    height: $size;
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+    padding: 0px;
+    margin: 0px;
+}
+
+.btn {
+    position: absolute;
+    z-index: $z-front;
+
+    &-update {
+        left: 10px;
+        bottom: 10px;
+    }
+
+    &-save {
+        left: 10px;
+        bottom: 60px;
+    }
+}

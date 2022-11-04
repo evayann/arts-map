@@ -1,0 +1,6 @@
+<app-menu
+  [features]="features"
+  (save)="saveMap()"
+  (selected)="updateMap($event)"
+></app-menu>
+<app-map #map></app-map>

@@ -1,0 +1,33 @@
+<p-speedDial
+  class="settings"
+  [model]="items"
+  showIcon="pi pi-cog"
+  hideIcon="pi pi-times"
+  [radius]="90"
+  direction="up-right"
+  type="quarter-circle"
+></p-speedDial>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [breakpoints]="{ '960px': '85vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <p-header>
+    Filter & Style data to display
+  </p-header>
+  <p-tabView styleClass="filterModal">
+    <p-tabPanel header="Themes">
+      <app-menu-theme (selected)="setCurrentSelected($event)"></app-menu-theme>
+    </p-tabPanel>
+    
+    <p-tabPanel header="Advance : Style selected">
+      <app-menu-style [features]="currentSelected"></app-menu-style>      
+    </p-tabPanel>
+
+    <p-tabPanel header="Advance : Select in list">
+      <app-menu-select [features]="features" [(selected)]="currentSelected"></app-menu-select>
+      <!-- <app-menu-select [features]="features" (selected)="setCurrentSelected($event)"></app-menu-select> -->
+    </p-tabPanel>
+  </p-tabView>
+</p-dialog>

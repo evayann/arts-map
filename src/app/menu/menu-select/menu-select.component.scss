@@ -1,0 +1,25 @@
+.feature {
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 175px;
+    }
+
+    &-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+
+        &-element {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            text-align: center;
+
+            padding: 0 1em;
+        }
+    }
+}

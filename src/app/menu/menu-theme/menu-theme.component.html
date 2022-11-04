@@ -1,0 +1,7 @@
+<div *ngFor="let themes of themesByCategory | keyvalue">
+    <span> {{ themes.key }} </span>
+    <div *ngFor="let theme of themes.value | keyvalue">
+        <p> {{ theme.key }} </p>
+        <p-inputSwitch (onChange)="emit(theme.value, $event.checked)"></p-inputSwitch>
+    </div>
+</div>

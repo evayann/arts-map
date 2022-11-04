@@ -1,0 +1,14 @@
+<div id="map" 
+    leaflet 
+    [leafletOptions]="options"
+    [(leafletCenter)]="center"
+    [(leafletZoom)]="zoom"
+    [leafletLayers]="layers"
+    [leafletLayersControl]="layersControl"
+    (leafletMapReady)="onMapReady($event)">
+</div>
+
+<p-progressSpinner
+  *ngIf="isRequesting"
+  styleClass="spinner"
+></p-progressSpinner>

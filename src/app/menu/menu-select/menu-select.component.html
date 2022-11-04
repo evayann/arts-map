@@ -1,0 +1,24 @@
+<p-accordion>
+  <p-accordionTab *ngFor="let feature of features | keyvalue">
+    <p-header class="feature-header">
+      {{ feature.key }}
+      <p-inputSwitch
+        [(ngModel)]="selectedElements[feature.key]['*']"
+        (click)="$event.stopPropagation()"
+        (onChange)="toggleAll(feature.key, $event.checked)"
+      ></p-inputSwitch>
+    </p-header>
+
+    <div class="feature-grid">
+      <div *ngFor="let value of feature.value" class="feature-grid-element">
+        <p-inputSwitch
+          [(ngModel)]="selectedElements[feature.key][value]"
+          (onChange)="toggle(feature.key, value, $event.checked)"
+        >
+        </p-inputSwitch>
+        <p class="text">{{ value.replace("_", " ") }}</p>
+        <i class="pi pi-info-circle" pTooltip="Description of this feature"></i>
+      </div>
+    </div>
+  </p-accordionTab>
+</p-accordion>

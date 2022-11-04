@@ -1,0 +1,8 @@
+@import "../../styles/variables";
+
+#nav {
+    position: absolute;
+    z-index: 1000;
+    top: $border;
+    left: $border;
+}
