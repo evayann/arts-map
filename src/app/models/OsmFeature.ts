@@ -1,5 +1,5 @@
 export const ALL_GEOMETRY = "all";
-export type OsmGeometry = 'node' | 'way' | 'relation' | 'all';
+export type OsmGeometry = 'node' | 'way' | 'relation' | typeof ALL_GEOMETRY;
 
 export type OsmRequestParameters = {
     features: OsmFeature[];
@@ -9,13 +9,13 @@ export type OsmRequestParameters = {
 
 export class OsmFeature {
     public style: L.PathOptions;
-    constructor(public geometry: OsmGeometry, public key: string, public value: string | '*') { 
+    constructor(public geometry: OsmGeometry, public key: string, public value: string | '*') {
         this.style = {
             color: '#aa0000',
             weight: 1,
             fillColor: '#00aa00',
             fillOpacity: 1
-        }; 
+        };
     }
 
     toRequest(bbox: string): string {

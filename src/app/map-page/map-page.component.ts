@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { MapComponent } from '../map/map.component';
+import { MapComponent } from './map/map.component';
 import { OsmFeatures } from '../models/OsmFeatures';
-import { OsmFeaturesService } from '../osm-features.service';
+import { OsmFeaturesService } from '../services/osm-features.service';
 
 @Component({
   selector: 'app-map-page',
-  templateUrl: './map-page.component.html',
-  styleUrls: ['./map-page.component.scss']
+  templateUrl: './map-page.component.html'
 })
 export class MapPageComponent {
   @ViewChild('map')

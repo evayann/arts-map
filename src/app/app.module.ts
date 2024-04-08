@@ -17,15 +17,15 @@ import { FieldsetModule } from 'primeng/fieldset';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
-import { MenuComponent } from './menu/menu.component';
+import { MapComponent } from './map-page/map/map.component';
+import { MenuComponent } from './map-page/menu/menu.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { MapPageComponent } from './map-page/map-page.component';
-import { MenuSelectComponent } from './menu/menu-select/menu-select.component';
-import { MenuStyleComponent } from './menu/menu-style/menu-style.component';
-import { MenuThemeComponent } from './menu/menu-theme/menu-theme.component';
+import { MenuSelectComponent } from './map-page/menu/menu-select/menu-select.component';
+import { MenuStyleComponent } from './map-page/menu/menu-style/menu-style.component';
+import { MenuThemeComponent } from './map-page/menu/menu-theme/menu-theme.component';
 
 @NgModule({
   declarations: [

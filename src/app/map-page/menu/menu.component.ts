@@ -1,10 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { OsmFeatures } from '../models/OsmFeatures';
-
-
-// TODO rework
-const ALL = "*";
+import { OsmFeatures } from '../../models/OsmFeatures';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +8,6 @@ const ALL = "*";
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-
   @Input() features!: Record<string, string[]>;
   @Output() selected: EventEmitter<OsmFeatures> = new EventEmitter();
   @Output() save: EventEmitter<void> = new EventEmitter();
@@ -21,8 +16,6 @@ export class MenuComponent implements OnInit {
 
   displayDialog = false;
   items!: MenuItem[];
-
-  constructor() { }
 
   ngOnInit(): void {
     this.items = [

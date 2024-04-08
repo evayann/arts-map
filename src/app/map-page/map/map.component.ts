@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 
 import { Observable, Subscriber } from 'rxjs';
 
 import { LeafletControlLayersConfig } from '@asymmetrik/ngx-leaflet';
-import domtoimage from 'dom-to-image';
+import { saveSvgAsPng } from 'save-svg-as-png';
 import { Feature, GeoJsonObject, Geometry } from 'geojson';
 import * as L from 'leaflet';
 import Geocoder from 'leaflet-control-geocoder';
 import * as osmtogeojson from 'osmtogeojson';
-import { OsmFeatures } from '../models/OsmFeatures';
-import { OsmFeaturesService } from '../osm-features.service';
+import { OsmFeatures } from '../../models/OsmFeatures';
+import { OsmFeaturesService } from '../../services/osm-features.service';
 
 @Component({
   selector: 'app-map',
@@ -21,6 +21,7 @@ export class MapComponent {
 
   currentGeoJson!: L.GeoJSON;
   isRequesting: boolean = false;
+
 
   private classicLayer: L.TileLayer = L.tileLayer(
     'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
@@ -34,7 +35,7 @@ export class MapComponent {
 
   zoom: number = 13;
   center: L.LatLng = L.latLng(45.18, 5.75);
-  options: L.MapOptions = { layers: [ this.classicLayer ] };
+  options: L.MapOptions = { layers: [this.classicLayer] };
 
   layers: L.Layer[] = [];
   layersControl: LeafletControlLayersConfig = {
@@ -89,33 +90,51 @@ export class MapComponent {
 
         let fillPalette = ['orange', 'green', 'blue'];
 
-        let gradientString = `<linearGradient id="stripes" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset=0 stop-color=${fillPalette[0]} />
-          <stop offset=33% stop-color=${fillPalette[0]} />
-          <stop offset=33% stop-color=${fillPalette[1]} />
-          <stop offset=66% stop-color=${fillPalette[1]} />
-          <stop offset=66% stop-color=${fillPalette[2]} />
-          <stop offset=100% stop-color=${fillPalette[2]} />
-          </linearGradient>`;
+        // let gradientString = `<linearGradient id="stripes" x1="0%" y1="0%" x2="100%" y2="100%">
+        //   <stop offset=0 stop-color=${fillPalette[0]} />
+        //   <stop offset=33% stop-color=${fillPalette[0]} />
+        //   <stop offset=33% stop-color=${fillPalette[1]} />
+        //   <stop offset=66% stop-color=${fillPalette[1]} />
+        //   <stop offset=66% stop-color=${fillPalette[2]} />
+        //   <stop offset=100% stop-color=${fillPalette[2]} />
+        //   </linearGradient>`;
 
-        let svg = document.getElementsByTagName('svg')[0];
-        let svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        svgDefs.insertAdjacentHTML('afterbegin', gradientString);
-        svg.appendChild(svgDefs);
+        let gradientString = `
+        <pattern id="stripes"
+          width="8" height="10"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(45 50 50)">
+          <line stroke="#a6a6a6" stroke-width="7px" y2="10"/>
+        </pattern>
+    `;
 
-        const commonStyle = (feature: Feature<Geometry, any>): L.PathOptions | undefined => ({color: "url(#stripes)", fillOpacity: 0.2}); //features.findByFeatureProperty(feature.properties)?.style;
+
+        // let svg = document.getElementsByTagName('svg')[0];
+        // console.log(svg)
+        // let svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        // svgDefs.insertAdjacentHTML('afterbegin', gradientString);
+        // svg.appendChild(svgDefs);
+
+        const commonStyle = (feature: Feature<Geometry, any>): L.PathOptions | undefined => ({ color: "url(#stripes)", fillOpacity: 0.2 }); //features.findByFeatureProperty(feature.properties)?.style;
+        // const commonStyle = (feature: Feature<Geometry, any>): L.PathOptions | undefined => features.findByFeatureProperty(feature.properties)?.style;
 
         this.currentGeoJson = L.geoJSON(geoJSON, {
           style: (feature: any): L.PathOptions => commonStyle(feature) || {},
-          pointToLayer: (feature: Feature<Geometry, any>, latlng: L.LatLngExpression) => L.circleMarker(latlng, { radius: 3, ...commonStyle(feature)})
+          pointToLayer: (feature: Feature<Geometry, any>, latlng: L.LatLngExpression) => L.circleMarker(latlng, { radius: 3, ...commonStyle(feature) })
         });
         this.layers = [this.currentGeoJson];
-        
+
         this.currentGeoJson.addTo(this.map);
+
+        let svg = document.querySelector(".leaflet-overlay-pane svg") as SVGElement
+        console.log(svg)
+        let svgDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        svgDefs.insertAdjacentHTML('afterbegin', gradientString);
+        svg.appendChild(svgDefs);
       })
-      .catch(() => {
+      .catch((e) => {
         this.isRequesting = false;
-        console.warn("Request failed !");
+        console.warn("Request failed !", e);
       });
   }
 
@@ -137,14 +156,9 @@ export class MapComponent {
 
   saveMap(): void {
     console.log("Start generate image + download map");
-    const el = document.querySelector(".leaflet-overlay-pane");
-    domtoimage.toPng(el as Node)
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "map.png";
-        link.click();
-      });
+    const el = document.querySelector(".leaflet-overlay-pane svg") as any;
+    console.log(el)
+    saveSvgAsPng(el, "diagram.png");
   }
 
   onMapReady(map: L.Map): void {
